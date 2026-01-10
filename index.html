@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burak Multiomics | Bio-Computational Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --gold: #fbbf24;
+            --navy: #020d0a; 
+            --emerald: #10b981;
+            --border: rgba(16, 185, 129, 0.2);
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--navy);
+            color: #f8fafc;
+            background-image: radial-gradient(circle at top right, rgba(16, 185, 129, 0.15), transparent),
+                              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05), transparent);
+            scroll-behavior: smooth;
+        }
+        .glass {
+            background: rgba(16, 185, 129, 0.03);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--emerald) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .step-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border);
+        }
+        .step-card:hover {
+            transform: translateX(12px) scale(1.02);
+            border-color: var(--gold);
+            background: rgba(251, 191, 36, 0.05);
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.1);
+        }
+
+        .cascade-connector {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--emerald), var(--gold));
+            margin: 0 auto;
+            opacity: 0.5;
+        }
+
+        .badge-t5 {
+            background: linear-gradient(90deg, #10b981, #0ea5e9);
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .modal-blur {
+            backdrop-filter: blur(50px);
+            background: rgba(0, 10, 8, 0.9);
+        }
+
+        .marker-pill {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-emerald-600 rounded-xl flex items-center justify-center font-bold text-black shadow-lg shadow-emerald-500/20">B</div>
+                <span class="text-xl font-800 tracking-tighter uppercase text-white">Burak <span class="text-amber-400">Multiomics</span></span>
+            </div>
+            <div class="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                <a href="#cascade" class="hover:text-amber-400 transition">7-Step IP</a>
+                <a href="#t5-discovery" class="hover:text-amber-400 transition">T5 Discovery</a>
+                <a href="#roi" class="hover:text-amber-400 transition">Institutional ROI</a>
+            </div>
+            <button onclick="openModal('login-modal')" class="bg-amber-400 hover:bg-white text-black px-6 py-2.5 rounded-full text-[10px] font-900 transition uppercase tracking-widest shadow-xl shadow-amber-400/20">
+                Access Portal
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-48 pb-32 px-6 overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-900 uppercase tracking-[0.3em] mb-12">
+                <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+                Bio-Computational Engineering Core
+            </div>
+            <h1 class="text-5xl md:text-8xl font-800 tracking-tight mb-8 leading-[0.95] text-white">
+                The Architecture of <br> <span class="text-gradient">Biological Truth.</span>
+            </h1>
+            <p class="text-lg text-slate-400 max-w-3xl mx-auto mb-16 leading-relaxed font-medium">
+                Standardizing institutional risk for <strong>Partner Payers & Providers</strong>. We process batch cohorts of 500+ reports through an 8-layer IP cascade to export predictive intelligence via the Al Mohafiz dashboard.
+            </p>
+            <div class="flex flex-col md:flex-row gap-6 justify-center">
+                <button onclick="openModal('datalake-modal')" class="bg-white text-black font-900 px-12 py-5 rounded-2xl hover:bg-amber-400 transition duration-300 uppercase text-xs tracking-widest shadow-2xl shadow-white/5">
+                    Explore Data Lake
+                </button>
+                <button onclick="openModal('matrix-modal')" class="glass text-white font-bold px-12 py-5 rounded-2xl border border-white/10 hover:bg-white/5 transition text-xs flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4 text-amber-400"></i>
+                    9-Disease Matrix
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE BURAK IP CASCADE (8 LAYERS) -->
+    <section id="cascade" class="py-24 px-6 relative">
+        <div class="max-w-4xl mx-auto text-center mb-24">
+            <h2 class="text-5xl font-800 mb-6 uppercase tracking-tighter text-white">The Burak 7-Step IP</h2>
+            <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">Proprietary Cascade Pattern Analysis Algorithm</p>
+        </div>
+
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Layer 1 -->
+            <div class="step-card glass p-6 rounded-3xl flex items-center gap-6">
+                <div class="w-14 h-14 bg-emerald-400/10 rounded-2xl flex items-center justify-center font-bold text-emerald-400 mono text-xl">01</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i data-lucide="upload-cloud" class="w-4 h-4 text-emerald-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight text-white">Batch Ingestion Bridge</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">Phase 1: Ingesting **500+ multi-omic reports** per batch from partner laboratories.</p>
+                </div>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 2 -->
+            <div class="step-card glass p-8 rounded-3xl flex items-center gap-6 border-amber-400/20 cursor-pointer group" onclick="openModal('datalake-modal')">
+                <div class="w-14 h-14 bg-amber-400/10 rounded-2xl flex items-center justify-center font-bold text-amber-400 mono text-xl group-hover:bg-amber-400 group-hover:text-black transition">02</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="database" class="w-4 h-4 text-amber-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight group-hover:text-white">Aggregated Data Lake</h3>
+                    </div>
+                    <div class="flex gap-4">
+                        <span class="text-[9px] font-900 bg-white/5 px-2 py-1 rounded-md text-slate-300 border border-white/5 tracking-widest">30 BLOOD (VIP)</span>
+                        <span class="text-[9px] font-900 bg-white/5 px-2 py-1 rounded-md text-slate-300 border border-white/5 tracking-widest">11 INFLAMMATION</span>
+                        <span class="text-[9px] font-900 bg-white/5 px-2 py-1 rounded-md text-slate-300 border border-white/5 tracking-widest">7 GUT</span>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-slate-600"></i>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 3 -->
+            <div class="step-card glass p-6 rounded-3xl flex items-center gap-6">
+                <div class="w-14 h-14 bg-rose-400/10 rounded-2xl flex items-center justify-center font-bold text-rose-400 mono text-xl">03</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i data-lucide="flame" class="w-4 h-4 text-rose-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight text-white">Inflammation Strata</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">Calculative proteomic systemic burn rates across the entire cohort.</p>
+                </div>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 4 -->
+            <div class="step-card glass p-6 rounded-3xl flex items-center gap-6">
+                <div class="w-14 h-14 bg-orange-400/10 rounded-2xl flex items-center justify-center font-bold text-orange-400 mono text-xl">04</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-orange-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight text-white">Sentinel Alarms</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">Immediate triggers for critical clinical reference range failures across the batch.</p>
+                </div>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 5 (9-Disease) -->
+            <div class="step-card glass p-10 rounded-[2.5rem] border-2 border-emerald-500/50 bg-emerald-500/5 flex items-center gap-6 relative cursor-pointer group" onclick="openModal('matrix-modal')">
+                <div class="absolute -top-3 right-8 bg-emerald-500 text-black text-[10px] font-900 px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-emerald-500/20">Active Vertical: Diabetes Discovery</div>
+                <div class="w-16 h-16 bg-emerald-400/20 rounded-2xl flex items-center justify-center font-bold text-emerald-400 mono text-2xl group-hover:bg-emerald-400 group-hover:text-black transition duration-500">05</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-1">
+                        <i data-lucide="grid" class="w-5 h-5 text-emerald-400"></i>
+                        <h3 class="font-900 text-2xl text-emerald-400 uppercase tracking-tighter">9-Disease Cohort matrix</h3>
+                    </div>
+                    <p class="text-sm text-slate-300 font-bold italic tracking-tight">Phase 1: Vertical expansion of Diabetes Sub-Pipeline.</p>
+                </div>
+                <i data-lucide="external-link" class="w-6 h-6 text-emerald-500"></i>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 6 -->
+            <div class="step-card glass p-6 rounded-3xl flex items-center gap-6 cursor-pointer group" onclick="openModal('handshake-modal')">
+                <div class="w-14 h-14 bg-purple-400/10 rounded-2xl flex items-center justify-center font-bold text-purple-400 mono text-xl group-hover:bg-purple-400 group-hover:text-white transition">06</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i data-lucide="share-2" class="w-4 h-4 text-purple-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight text-white group-hover:text-white">Triadic Handshake Engine</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">3-way correlation between Blood (Metabolome), Gut (Metagenome), and Inflammation status.</p>
+                </div>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 7 -->
+            <div class="step-card glass p-6 rounded-3xl flex items-center gap-6">
+                <div class="w-14 h-14 bg-blue-400/10 rounded-2xl flex items-center justify-center font-bold text-blue-400 mono text-xl">07</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-400"></i>
+                        <h3 class="font-800 text-lg uppercase tracking-tight text-white">Advanced Analytics</h3>
+                    </div>
+                    <p class="text-sm text-slate-500 font-medium">Shannon Index diversity math and clinical ecosystem stability modeling.</p>
+                </div>
+            </div>
+            <div class="cascade-connector"></div>
+
+            <!-- Layer 8 -->
+            <div class="step-card glass p-12 rounded-[3rem] bg-gradient-to-br from-emerald-500/10 to-blue-600/10 border-emerald-400/30 flex items-center gap-8 shadow-2xl shadow-emerald-500/10">
+                <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center font-900 text-navy text-3xl mono shadow-2xl">08</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-4 mb-2">
+                        <i data-lucide="clipboard-list" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="font-900 text-3xl text-white uppercase tracking-tighter">AI Report Verdict</h3>
+                        <span class="badge-t5 uppercase tracking-widest">T5 DISCOVERY ENGINE</span>
+                    </div>
+                    <p class="text-slate-400 text-base leading-relaxed font-medium italic">High-fidelity institutional synthesis for biological health policy makers.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- T5 DIABETES DISCOVERY -->
+    <section id="t5-discovery" class="py-24 px-6 bg-emerald-950/20 border-y border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="order-2 md:order-1 relative group">
+                <div class="absolute inset-0 bg-emerald-500/10 blur-[100px] group-hover:bg-emerald-500/20 transition duration-700"></div>
+                <div class="glass p-1 rounded-[3rem] overflow-hidden shadow-3xl">
+                    <img src="https://images.unsplash.com/photo-1551288049-bbbda546697a?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-[2.8rem] opacity-70 grayscale group-hover:grayscale-0 transition duration-1000" alt="Bio-Computational Analytics">
+                </div>
+                <div class="absolute bottom-10 -right-10 glass p-6 rounded-2xl border-emerald-500/30 hidden lg:block float-anim">
+                    <p class="mono text-[10px] text-emerald-400"># T5.discovery_layer_active</p>
+                    <p class="mono text-[10px] text-slate-300">Phase_1: Diabetes_Cohort_Vertical</p>
+                    <p class="mono text-[10px] text-slate-500">Representing species @ 13.3k samples</p>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <span class="text-amber-400 font-900 text-[10px] uppercase tracking-[0.4em] mb-4 block">Vertical Sub-Pipeline</span>
+                <h2 class="text-5xl font-800 mb-8 uppercase tracking-tighter text-white leading-tight">T5 Diabetes <br> Discovery Vertical</h2>
+                <p class="text-slate-400 text-xl leading-relaxed mb-10 font-medium">
+                    We utilize the **T5 Transformer Foundation Model** specifically for the vertical expansion of our Diabetes cohort. Moving beyond simple HbA1c tracking, our T5 engine learns context-aware species representations to identify the **exact metabolic drift** of the Middle Eastern demographic.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 p-5 glass rounded-2xl border-l-4 border-emerald-500 hover:bg-emerald-500/5 transition">
+                        <i data-lucide="cpu" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                        <p class="text-sm text-slate-300"><strong>Advanced Pattern Catch:</strong> Identifying the BCAA-Gut-Inflammation handshake before insulin resistance manifests.</p>
+                    </div>
+                    <div class="flex items-start gap-4 p-5 glass rounded-2xl border-l-4 border-blue-500 hover:bg-blue-500/5 transition">
+                        <i data-lucide="search" class="w-5 h-5 text-blue-400 shrink-0"></i>
+                        <p class="text-sm text-slate-300"><strong>Clinical Discovery:</strong> Highlighting specific microbe-disease linkages across GCC biological signatures.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTITUTIONAL ROI & POPULATION DASHBOARD -->
+    <section id="roi" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl font-800 mb-4 uppercase tracking-tighter text-white">Institutional ROI Bridge</h2>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">Research Intelligence Feeding Commercial Outcomes</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Research Pipeline -->
+                <div class="glass p-12 rounded-[3rem] border-l-4 border-amber-400">
+                    <span class="text-amber-400 font-900 text-[10px] uppercase tracking-widest mb-6 block">Engineered Evolution</span>
+                    <h3 class="text-3xl font-800 mb-8 text-white uppercase tracking-tight">Research Pipeline</h3>
+                    <p class="text-slate-400 text-base mb-10 leading-relaxed font-medium">
+                        Working closely with partner institutions to vet the **7-Step IP Algorithm**. We ingest clinical truth to optimize our vertical sub-pipelines (Diabetes, Oncology, Renal).
+                    </p>
+                    <ul class="space-y-4 mb-10">
+                        <li class="text-xs text-slate-500 flex items-center gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-amber-400"></i> 7th QIPC Validated Cascade Logic</li>
+                        <li class="text-xs text-slate-500 flex items-center gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-amber-400"></i> Multi-omic handshake discovery</li>
+                        <li class="text-xs text-slate-500 flex items-center gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-amber-400"></i> T5 species-level mapping for GCC population</li>
+                    </ul>
+                    <div class="flex items-center gap-3 text-emerald-400 font-bold text-xs uppercase tracking-widest">
+                        Feeding Population Dashboard <i data-lucide="arrow-right-circle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+
+                <!-- Commercial Pipeline -->
+                <div class="glass p-12 rounded-[3rem] border-l-4 border-emerald-500 bg-emerald-500/5">
+                    <span class="text-emerald-400 font-900 text-[10px] uppercase tracking-widest mb-6 block">Aggregated Risk Valuation</span>
+                    <h3 class="text-3xl font-800 mb-8 text-white uppercase tracking-tight">Commercial Outcome</h3>
+                    <p class="text-slate-400 text-base mb-10 leading-relaxed font-medium">
+                        The **Population Dashboard** for Insurance, Government, and Policy Makers. Transforming multi-omic noise into structured risk trajectories.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        <div class="p-6 bg-navy rounded-3xl border border-white/5 hover:border-emerald-500/20 transition">
+                            <h5 class="text-emerald-400 text-[11px] font-900 uppercase mb-3 tracking-widest">Phase 1</h5>
+                            <p class="text-[10px] text-slate-400 leading-relaxed font-bold">500+ Batch Report Ingestion from Partner Laboratories.</p>
+                        </div>
+                        <div class="p-6 bg-navy rounded-3xl border border-white/5 hover:border-blue-500/20 transition">
+                            <h5 class="text-blue-400 text-[11px] font-900 uppercase mb-3 tracking-widest">Phase 2</h5>
+                            <p class="text-[10px] text-slate-400 leading-relaxed font-bold">Direct API Integration for live Sovereign Health Monitoring.</p>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-[0.2em] text-center">Identifying systemic biological debt before failure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-32 px-6 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-3 mb-10">
+                <div class="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center font-bold text-black text-sm">B</div>
+                <span class="font-800 tracking-tighter uppercase text-xl text-white">Burak Multiomics</span>
+            </div>
+            
+            <div class="text-slate-600 text-[11px] tracking-[0.6em] uppercase font-900 mb-16">
+                Sovereign Health Intelligence • Doha • Dubai • Riyadh
+            </div>
+
+            <div class="glass border-emerald-500/20 p-12 rounded-[3rem] inline-block max-w-2xl bg-emerald-500/5">
+                <p class="text-emerald-400 font-900 text-2xl tracking-tight mb-4">Meet Waseem Ahmad Ahanger</p>
+                <p class="text-white font-bold text-base mb-6 leading-relaxed">
+                    Presenting the 8-Layer IP Cascade Logic at the <br> 
+                    <span class="text-amber-400">7th Qatar International Pharmacy Conference (QIPC)</span>
+                </p>
+                <div class="flex items-center justify-center gap-5 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+                    <span>Scientific Presentation</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+                    <span>Multi-Omic Algorithm Architecture</span>
+                </div>
+            </div>
+
+            <p class="text-slate-600 text-[10px] uppercase tracking-[0.4em] leading-loose mt-24 font-bold">
+                Batch Capacity: 500+ Reports • T5 Discovery Integrated • Math-First Engineering
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- 1. DATA LAKE MODAL -->
+    <div id="datalake-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 modal-blur" onclick="closeModal('datalake-modal')"></div>
+        <div class="glass max-w-4xl w-full p-12 rounded-[3.5rem] relative shadow-2xl border-white/10 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <h3 class="text-4xl font-900 text-amber-400 uppercase tracking-tighter">Aggregated Data Lake</h3>
+                    <p class="text-slate-500 text-[10px] font-900 uppercase tracking-[0.3em] mt-2">48 Core Bio-Computational Markers</p>
+                </div>
+                <button onclick="closeModal('datalake-modal')" class="text-slate-500 hover:text-white text-4xl font-light">&times;</button>
+            </div>
+            <div class="space-y-12">
+                <div>
+                    <h4 class="text-emerald-400 font-800 text-xs uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i data-lucide="activity" class="w-4 h-4"></i> 30 Metabolomics & VIP Markers
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="marker-pill">Glucose</span><span class="marker-pill">HbA1c</span><span class="marker-pill">Insulin</span>
+                        <span class="marker-pill">HOMA-IR</span><span class="marker-pill">Triglycerides</span><span class="marker-pill">HDL/LDL</span>
+                        <span class="marker-pill">ApoB</span><span class="marker-pill">ALT/AST</span><span class="marker-pill">Uric Acid</span>
+                        <span class="marker-pill">BCAA Sum</span><span class="marker-pill">Cortisol</span><span class="marker-pill">Vit-D/B12</span>
+                        <span class="marker-pill text-emerald-400">+ 18 OTHERS</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-rose-400 font-800 text-xs uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i data-lucide="flame" class="w-4 h-4"></i> 11 Proteomic Inflammation
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="marker-pill">hs-CRP</span><span class="marker-pill">IL-6</span><span class="marker-pill">TNF-α</span>
+                        <span class="marker-pill">IL-1β</span><span class="marker-pill">Ferritin</span><span class="marker-pill">SII Index</span>
+                        <span class="marker-pill">NLR Ratio</span><span class="marker-pill text-rose-400">+ 4 OTHERS</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-blue-400 font-800 text-xs uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <i data-lucide="microscope" class="w-4 h-4"></i> 7 Gut Metagenomic Phyla
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="marker-pill">Firmicutes</span><span class="marker-pill">Bacteroidetes</span><span class="marker-pill">Akkermansia</span>
+                        <span class="marker-pill">Actinobacteria</span><span class="marker-pill">Proteobacteria</span><span class="marker-pill">Shannon $H'$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 9-DISEASE MATRIX MODAL -->
+    <div id="matrix-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 modal-blur" onclick="closeModal('matrix-modal')"></div>
+        <div class="glass max-w-6xl w-full p-12 rounded-[4rem] relative shadow-2xl border-white/10 max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-12">
+                <div>
+                    <h3 class="text-4xl font-900 text-emerald-400 uppercase tracking-tighter">9-Disease Cohort Matrix</h3>
+                    <p class="text-slate-500 text-[10px] font-900 uppercase tracking-[0.3em] mt-2">Standardized Pathological Patterns for Population Valuation</p>
+                </div>
+                <button onclick="closeModal('matrix-modal')" class="text-slate-500 hover:text-white text-4xl font-light">&times;</button>
+            </div>
+            <div id="matrix-grid" class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-emerald-500 bg-emerald-500/10 cursor-pointer group" onclick="showDiabetes()">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition">🩸</div>
+                    <h4 class="font-800 uppercase text-xs tracking-widest text-emerald-400">Diabetes</h4>
+                    <p class="text-[9px] text-slate-500 mt-2 font-black uppercase tracking-widest">Click for T5 Discovery Deep Dive</p>
+                </div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🧬</div><h4 class="font-800 uppercase text-xs text-white">Oncology</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🫀</div><h4 class="font-800 uppercase text-xs text-white">Cardio</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🫁</div><h4 class="font-800 uppercase text-xs text-white">Renal</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🧠</div><h4 class="font-800 uppercase text-xs text-white">Neuro</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🧪</div><h4 class="font-800 uppercase text-xs text-white">Metabolic</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🫙</div><h4 class="font-800 uppercase text-xs text-white">Hepatic</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">🛡️</div><h4 class="font-800 uppercase text-xs text-white">Immuno</h4></div>
+                <div class="glass p-10 rounded-3xl text-center border-b-4 border-slate-800"><div class="text-4xl mb-4">💨</div><h4 class="font-800 uppercase text-xs text-white">Pulm</h4></div>
+            </div>
+            <!-- Diabetes Deep Dive (Hidden) -->
+            <div id="diabetes-view" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <button onclick="hideDiabetes()" class="text-emerald-400 text-xs font-bold uppercase mb-8 flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Matrix
+                </button>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="glass p-10 rounded-[3rem] border-emerald-500/30">
+                        <h4 class="text-3xl font-900 text-white mb-6 uppercase tracking-tighter">Phase 1: <br>Diabetes Discovery Expansion</h4>
+                        <p class="text-slate-400 text-sm mb-10 leading-relaxed font-medium">Using T5 Transformer representations to identify the **Triadic Handshake** between BCAA velocity and Gut Integrity 18 months before failure.</p>
+                        <div class="p-6 bg-emerald-500/5 border-l-4 border-emerald-500 rounded-2xl text-[11px] text-slate-300 font-bold uppercase tracking-widest">Targeting Insulin Sovereignty through Mathematical System Restore.</div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1579152128802-e95b9b1ad674?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] opacity-40 h-[400px] object-cover border border-white/5 shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. HANDSHAKE MODAL -->
+    <div id="handshake-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 modal-blur" onclick="closeModal('handshake-modal')"></div>
+        <div class="glass max-w-4xl w-full p-12 rounded-[4rem] text-center shadow-2xl border-white/10">
+            <h3 class="text-4xl font-900 text-gradient mb-12 uppercase tracking-tighter">Triadic Handshake</h3>
+            <div class="grid grid-cols-3 gap-8">
+                <div class="glass p-10 rounded-3xl hover:border-emerald-500/50 transition">
+                    <i data-lucide="microscope" class="w-12 h-12 text-emerald-400 mx-auto mb-6"></i>
+                    <h4 class="font-800 text-xs uppercase text-white">Metagenome</h4>
+                </div>
+                <div class="glass p-10 rounded-3xl hover:border-amber-400/50 transition">
+                    <i data-lucide="droplet" class="w-12 h-12 text-amber-400 mx-auto mb-6"></i>
+                    <h4 class="font-800 text-xs uppercase text-white">Metabolome</h4>
+                </div>
+                <div class="glass p-10 rounded-3xl hover:border-rose-500/50 transition">
+                    <i data-lucide="flame" class="w-12 h-12 text-rose-400 mx-auto mb-6"></i>
+                    <h4 class="font-800 text-xs uppercase text-white">Proteome</h4>
+                </div>
+            </div>
+            <p class="mt-12 text-slate-500 text-xs font-bold uppercase tracking-widest italic">"We compute the cross-product of systemic status."</p>
+        </div>
+    </div>
+
+    <!-- 4. LOGIN PORTAL -->
+    <div id="login-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/98 backdrop-blur-2xl" onclick="closeModal('login-modal')"></div>
+        <div class="glass max-w-md w-full p-12 rounded-[3.5rem] border-white/5 bg-[#020d0a]">
+            <h3 class="text-2xl font-900 mb-6 text-emerald-400 uppercase tracking-tighter">Institutional Portal</h3>
+            <form class="space-y-4">
+                <input type="email" placeholder="Institutional Email" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-emerald-500 text-sm font-semibold">
+                <input type="password" placeholder="Key" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-emerald-500 text-sm font-semibold">
+                <button type="button" class="w-full bg-emerald-500 text-black font-900 py-4 rounded-2xl mt-4 uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20">Initialize 500-Batch Ingestion</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        function showDiabetes() { document.getElementById('matrix-grid').classList.add('hidden'); document.getElementById('diabetes-view').classList.remove('hidden'); }
+        function hideDiabetes() { document.getElementById('diabetes-view').classList.add('hidden'); document.getElementById('matrix-grid').classList.remove('hidden'); }
+    </script>
+</body>
+</html>
